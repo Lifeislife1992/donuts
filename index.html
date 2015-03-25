@@ -1,0 +1,79 @@
+<html>
+<head>
+    <title>Урок с калькулятором</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script type="text/javascript">
+        function updateOrder() {
+            const TAXRATE = 0.2;
+            const DONUTPRICE = 2;
+            var numCakeDonuts = parseDonuts(document.getElementById("cakedonuts").value);
+            var numGlazDonuts = parseDonuts(document.getElementById("glazdonuts").value);
+            if (isNaN(numCakeDonuts)) {
+                numCakeDonuts = 0;
+            }
+            if (isNaN(numGlazDonuts)) {
+                numGlazDonuts = 0;
+            }
+            var subTotal = (numCakeDonuts + numGlazDonuts) * DONUTPRICE;
+            var tax = subTotal * TAXRATE;
+            var total = subTotal + tax;
+            document.getElementById("subTotal").value=subTotal.toFixed(2) + "гривен";
+            document.getElementById("tax").value=tax.toFixed(2) + "гривен";
+            document.getElementById("total").value=total.toFixed(2) + "гривен";
+        }
+        function placeOrder(){
+            if(document.getElementById("name").value == "") {
+                alert("Введите пожалуйста имя!");
+            }
+            else if(!isNaN(document.getElementById("name").value)) {
+                alert("Имя не может содержать чисел")
+            }
+            //Передать заказ на сервер
+            form.submit();
+        }
+        function parseDonuts(donutString){
+            var numDonuts = parseInt(donutString);
+            if (donutString.indexOf("порции") !=-1 || donutString.indexOf("порций") !=-1){
+                numDonuts *= 12;
+                return numDonuts;
+            }
+            else {
+                return numDonuts;
+            }
+        }
+    </script>
+</head>
+<body>
+<form>
+    <h1>Калькулятор пончиков</h1>
+    <div class="field">
+        Ваше имя:
+        <input type="text" id="name" name="name" value="">
+    </div>
+    <div class="field">
+        Количество обычных пончиков:
+        <input type="text" id="cakedonuts" name="cakedonuts" value="0" onkeyup="updateOrder()">
+    </div>
+    <div class="field">
+        Количество пончиков с глазурью:
+        <input type="text" id="glazdonuts" name="glazdonuts" value="0" onchange="updateOrder()">
+    </div>
+    <div class="field">
+        Стоимость пончиков:
+        <input type="text" id="subTotal" name="subtotal" value="" disabled="disabled">
+    </div>
+    <div class="field">
+        Коефициент доставки:
+        <input type="text" id="tax" name="tax" value="" disabled="disabled">
+    </div>
+    <div class="field">
+        Общая стоимость:
+        <input type="text" id="total" name="total" value="" disabled="disabled">
+    </div>
+    <div class="field button">
+        <input type="button" value="Заказать!" onclick="placeOrder(this.form);">
+    </div>
+</form>
+</body>
+</html>
